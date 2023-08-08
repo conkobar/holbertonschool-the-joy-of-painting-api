@@ -1,10 +1,9 @@
 set global local_infile=true;
-CREATE DATABASE IF NOT EXISTS joy_of_painting;
-USE joy_of_painting;
+CREATE DATABASE IF NOT EXISTS joy;
+USE joy;
 CREATE TABLE IF NOT EXISTS episodes (
-    episodeID INT NOT NULL,
-	episode VARCHAR(10) NOT NULL,
-	episode_title VARCHAR(60) NOT NULL,
+	episode VARCHAR(10),
+	title VARCHAR(60),
 	apple_frame BOOLEAN,
 	aurora_borealis BOOLEAN,
 	barn BOOLEAN,
@@ -70,15 +69,61 @@ CREATE TABLE IF NOT EXISTS episodes (
 	windmill BOOLEAN,
 	window_frame BOOLEAN,
 	winter BOOLEAN,
-	wood_framed BOOLEAN,
-    PRIMARY KEY (`episodeID`)
+	wood_framed BOOLEAN
 );
 
 LOAD DATA LOCAL
 	INFILE "elements-by-episode.csv"
-	INTO TABLE objects
+	INTO TABLE episodes
 	FIELDS TERMINATED BY ','
 	IGNORE 1 LINES;
 
-ALTER TABLE objects DROP COLUMN title;
+UPDATE episodes SET title = REPLACE(title, '"""', '');
+
+CREATE TABLE IF NOT EXISTS paintings (
+	id INT,
+	painting_index INT,
+	img_src VARCHAR(255),
+	painting_title VARCHAR(255),
+	season INT,
+	episode INT,
+	num_colors INT,
+	youtube_src VARCHAR(255),
+	Black_Gesso BOOLEAN,
+	Bright_Red BOOLEAN,
+	Burnt_Umber BOOLEAN,
+	Cadmium_Yellow BOOLEAN,
+	Dark_Sienna BOOLEAN,
+	Indian_Red BOOLEAN,
+	Indian_Yellow BOOLEAN,
+	Liquid_Black BOOLEAN,
+	Liquid_Clear BOOLEAN,
+	Midnight_Black BOOLEAN,
+	Phthalo_Blue BOOLEAN,
+	Phthalo_Green BOOLEAN,
+	Prussian_Blue BOOLEAN,
+	Sap_Green BOOLEAN,
+	Titanium_White BOOLEAN,
+	Van_Dyke_Brown BOOLEAN,
+	Yellow_Ochre BOOLEAN,
+	Alizarin_Crimson BOOLEAN
+);
+
+LOAD DATA LOCAL
+	INFILE "paintings.csv"
+	INTO TABLE paintings
+	FIELDS TERMINATED BY ','
+	IGNORE 1 LINES;
+
+CREATE TABLE IF NOT EXISTS dates (
+	title VARCHAR(255),
+	date DATE
+);
+
+LOAD DATA LOCAL
+	INFILE "episode_dates.csv"
+	INTO TABLE dates
+	FIELDS TERMINATED BY ','
+	IGNORE 1 LINES;
+
 set global local_infile=false;
