@@ -123,7 +123,6 @@ CREATE TABLE IF NOT EXISTS dates (
 LOAD DATA LOCAL
 	INFILE "episode_dates.csv"
 	INTO TABLE dates
-	FIELDS TERMINATED BY ','
-	IGNORE 1 LINES;
+	FIELDS TERMINATED BY ',';
 
 set global local_infile=false;
